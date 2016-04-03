@@ -37,11 +37,10 @@ reverse([1, 2, 3]);
 function reverseWords (str) {
 	if(typeof(str) === 'string') {
 		var arr = str.split(" ");
-		var reversedArray = []
 		for (var i = 0; i < arr.length; i++) {
-			reversedArray.push(arr[i].split("").reverse().join(""));
+			arr[i] = arr[i].split("").reverse().join("");
 		}
-		return reversedArray.join(" ");
+		return arr.join(" ");
 	} else {
 		console.log('Not a String');
 	}
@@ -49,6 +48,7 @@ function reverseWords (str) {
 
 str3 = "A waCky Tester string!";
 console.log(reverseWords(str3)) //expect "A ykCaw retseT !gnirts"
+console.log(reverse(str3));
 reverseWords();
 reverseWords(1);
 reverseWords({force: 'be with you'});

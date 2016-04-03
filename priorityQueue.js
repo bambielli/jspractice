@@ -16,7 +16,7 @@
 	   			  this determines how the priority queue "heap" will be made valid.
 */
 
-var priorityQueue = function(comparator) {
+function priorityQueue(comparator) {
 	this.pQ = [null]
 	this.comparator = comparator || function (a, b) { return a > b; }
 };

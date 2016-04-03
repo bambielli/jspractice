@@ -8,7 +8,7 @@
 	      best course of action for my set up here. If I could add it as a private member
 	      of the linkedList.prototype that would be the dream...
 */
-var node = function (value, next) {
+function node(value, next) {
 	this.value = value;
 	this.next = next || null;
 };
@@ -18,7 +18,7 @@ var node = function (value, next) {
 	  front: keeps track of the node at the front of the list. Defaults to null.
 	  size: keeps track of how many items are in the list.
 */
-var linkedList = function() {
+function linkedList() {
 	this.front = null;
 	this.size = 0;
 };

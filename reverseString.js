@@ -25,6 +25,8 @@ console.log(reverse(str1));
 console.log(reverse(str2));
 console.log(str1); //expect "olleh"
 console.log(str2); //expect "yllis si siht llew"
+
+//these are not strings and should hit the else case
 reverse();
 reverse(1);
 reverse({force: 'be with you'});
@@ -49,6 +51,8 @@ function reverseWords (str) {
 str3 = "A waCky Tester string!";
 console.log(reverseWords(str3)) //expect "A ykCaw retseT !gnirts"
 console.log(reverse(str3));
+
+//these are not strings and should hit the else case
 reverseWords();
 reverseWords(1);
 reverseWords({force: 'be with you'});

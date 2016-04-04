@@ -68,6 +68,113 @@ binarySearchTree.prototype.push = function(val) {
 			}
 		}
 	}
+};
+
+
+// binarySearchTree.prototype.remove = function(val) {
+// 	if (this.root) {
+// 		var current = this.root;
+// 		var previous;
+// 		while (current) {
+// 			if (val < current.value) {
+// 				previous = {node: current, direction: 1};
+// 				current = current.left;
+// 			} else if (val > current.value) {
+// 				previous = {node: current, direction: 0};
+// 				current = current.right;
+// 			} else if (val === current.value) {
+// 				if (previous) {
+// 					if(previous.direction) {
+// 						previous.node.left = current.
+// 					}
+// 				} else {
+// 					//previous didn't exist, so that means we are removing the root
+// 					this.root = null;
+// 				}
+// 			}
+// 		}
+// 	}
+// }
+
+///////////////
+// Searching //
+///////////////
+
+/*
+	Iterative implementation of BFS using a queue
+
+	This implementation relies on the fact that there are no loops in the graph,
+	hence it does not mark each node with a "visited" flag.
+*/
+binarySearchTree.prototype.BFS = function(val) {
+	var visits = 0;
+	if (this.root) {
+		var Q = [this.root];
+		var current;
+		while (Q.length > 0) {
+			current = Q.shift(); //shift removes the first value from the queue
+			if(current && current.value === val) {
+				visits++;
+				return {node: current, visits: visits};
+			} else {
+				//this prevents nulls from being pushed to the queue, reducing space complexity
+				if(current.left) {
+					Q.push(current.left);
+				}
+				if(current.right) {
+					Q.push(current.right);
+				}
+				visits++;
+			}
+		}
+	}
+	return {node: null, visits: visits}
+};
+
+/*
+	Iterative implementation of DFS using a stack.
+
+	This implementation relies on the fact that there are no loops in the graph,
+	hence it does not mark each node with a "visited" flag.
+
+	Recursive implementation is like a pre-order traversal (goes down the left side first)
+	whereas this goes down the right side first because we push the right branch on last.
+*/
+binarySearchTree.prototype.DFS = function(val) {
+	var visits = 0;
+	if (this.root) {
+		var stack = [this.root];
+		var current;
+		while (stack.length > 0) {
+			current = stack.pop();
+			if (current && current.value === val) {
+				visits++;
+				return {node: current, visits: visits}
+			} else {
+				visits++;
+				//this prevents nulls from being pushed to the stack, reducing space complexity.
+				if (current.left) {
+					stack.push(current.left);
+				}
+				if (current.right) {
+					stack.push(current.right);
+				}
+			}
+		}
+	}
+	return {node: null, visits:visits};
+};
+
+
+///////////////
+// Balancing //
+///////////////
+
+/*
+	Look at the Day-Stout-Warren algorithm, and balance using this
+*/
+binarySearchTree.prototype.balance = function() {
+
 }
 
 ////////////////
@@ -100,7 +207,7 @@ binarySearchTree.prototype.inOrder = function(node, collection) {
 		collection.push(node.value);
 		this.inOrder(node.right, collection);
 	}
-}
+};
 
 /*
 	binarySearchTree.postOrder() --> postOrder traverses the tree following a postOrder traversal
@@ -114,11 +221,11 @@ binarySearchTree.prototype.postOrder = function(node, collection) {
 		this.postOrder(node.right, collection);
 		collection.push(node.value);
 	}
-}
+};
 
-/////////////////
-// PrettyPrint //
-/////////////////
+///////////
+// Utils //
+///////////
 /*
 	NOTE: Printing code was borrowed from Buliding Java Programs 3rd Edition, chapter 17,
 		  by authors Stuart Reges and Marty Stepp. http://www.buildingjavaprograms.com/
@@ -137,7 +244,7 @@ var printSideways = function (node, level) {
 		console.log(Array(level * 4 + 1).join(' ') + node.value)
 		printSideways(node.left, level + 1)
 	}
-}
+};
 
 /*
 	prettyPrintSideways() --> prints the bST sideways, so we can visualize it easier.
@@ -145,6 +252,16 @@ var printSideways = function (node, level) {
 binarySearchTree.prototype.prettyPrintSideways = function() {
 	printSideways(this.root, 0);
 	console.log();
+};
+
+binarySearchTree.prototype.sumTree = function() {
+	var collection = [];
+	var sum = 0;
+	this.inOrder(this.root, collection);
+	collection.forEach(function(val){
+		sum += val;
+	});
+	return sum;
 }
 
 ///////////
@@ -182,3 +299,24 @@ console.log("inOrder: " + inOrder); //should be [2, 3, 4, 5, 6, 7, 8]
 var postOrder = [];
 bST.postOrder(bST.root, postOrder);
 console.log("postOrder: " + postOrder); //should be [2, 4, 3, 6, 8, 7, 5]
+
+
+var sum = bST.sumTree();
+console.log(sum);
+
+var result = bST.DFS(2); //should find in 7
+console.log(result);
+var result = bST.BFS(2); //should find in 4
+console.log(result);
+
+var result = bST.DFS(8); //should find in 3
+console.log(result);
+var result = bST.BFS(8); //should find in 7
+console.log(result);
+
+var result = bST.DFS(4); //should find in 6
+console.log(result);
+var result = bST.BFS(4); //should find in 5
+console.log(result);
+
+

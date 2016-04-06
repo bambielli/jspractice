@@ -29,6 +29,13 @@ var bracketMap = {
 /*
 	bracketValidator --> String inputBrackets - string of brackets delimited by " "
 		returns true if brackets are properly nested, and false otherwise
+
+	runtime: O(n) since it only reuqires one pass through the string to determine its answer in worst case
+		worstCase is when all items are "openers", since it will need to push everything on to the stack
+		to determine whether or not the string is valid.
+
+	Space: O(n) since in the worst case it will push the entire string on to the stack.
+
 */
 function bracketValidator(inputBrackets) {
 	//check if the input is null, empty, or empty string.

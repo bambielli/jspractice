@@ -69,7 +69,6 @@ TempTracker.prototype.insert = function(newTemp) {
 
 	//increment the occurrences index
 	this.occurrences[newTemp]++;
-	console.log(this.occurrences[newTemp]);
 	if(this.occurrences[newTemp] > this.maxCount) {
 		this.maxCount = this.occurrences[newTemp];
 		this.mode = newTemp;
@@ -107,4 +106,6 @@ console.log(TT.getMin() === 1);
 console.log(TT.getMax() === 6);
 console.log(TT.getMean() === ((1+2+3+4+5+6) / 6));
 console.log(TT.getMode() === 1);
+TT.insert(4);
+console.log(TT.getMode() === 4);
 

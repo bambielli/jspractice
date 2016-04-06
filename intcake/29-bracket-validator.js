@@ -14,20 +14,13 @@
 
 	Examples:
 
-	"{ [ ] ( ) }" should return true
-	"{ [ ( ] ) }" should return false
-	"{ [ }" should return false
+	"{[]()}" should return true
+	"{[(])}" should return false
+	"{[}" should return false
 */
 
-// object that defines mapping between openers and closers
-var bracketMap = {
-	"{" : "}",
-	"[" : "]",
-	"(" : ")"
-};
-
 /*
-	bracketValidator --> String inputBrackets - string of brackets delimited by " "
+	bracketValidator --> String inputBrackets - string of brackets
 		returns true if brackets are properly nested, and false otherwise
 
 	runtime: O(n) since it only reuqires one pass through the string to determine its answer in worst case
@@ -38,23 +31,27 @@ var bracketMap = {
 
 */
 function bracketValidator(inputBrackets) {
+
+	// object that defines mapping between openers and closers
+	var bracketMap = {
+		"{" : "}",
+		"[" : "]",
+		"(" : ")"
+	};
+
 	//check if the input is null, empty, or empty string.
-	if(!inputBrackets) {
+	if(!inputBrackets || typeof inputBrackets !== 'string' || inputBrackets.length % 2 !== 0) {
 		return false;
 	}
-	//split string on space delimiter.
-	var arr = inputBrackets.split(" ");
-	if (arr.length % 2 !== 0) {
-		return false;
-	}
+
 	var stack = []
-	for (var i = 0; i < arr.length; i++) {
-		if(bracketMap[arr[i]]) {
-			//push the CLOSER on to the stack, for easy comparison later
-			stack.push(bracketMap[arr[i]]);
+	for (var i = 0; i < inputBrackets.length; i++) {
+		if(bracketMap[inputBrackets[i]]) {
+			//push the CLOSER on to the stack, for easy comparison to other closers later
+			stack.push(bracketMap[inputBrackets[i]]);
 		} else {
 			//this means it was not a key, so it must be a closer
-			if (stack.pop() !== arr[i]) {
+			if (stack.pop() !== inputBrackets[i]) {
 				return false;
 			}
 		}
@@ -70,10 +67,8 @@ function bracketValidator(inputBrackets) {
 // Tests //
 ///////////
 
-console.log(bracketValidator("{ [ ] ( ) }") === true);
-console.log(bracketValidator("{ [ ( ] ) }") === false);
-console.log(bracketValidator("{ [ }") === false);
+console.log(bracketValidator("{[]()}") === true);
+console.log(bracketValidator("{[(])}") === false);
+console.log(bracketValidator("{[}") === false);
 console.log(bracketValidator() === false);
 console.log(bracketValidator("") === false);
-
-

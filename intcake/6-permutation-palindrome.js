@@ -64,7 +64,7 @@ function isPalindromePermutationDict(input) {
 	Time complexity: O(N) <-- need to iterate through each character in the input string
 	Space complexity: O(N)...although if we really think about it there are only SO MANY characters in the
 		Ascii/unicode codecs. We could argue that it is O(k), where k is the number of max characters
-		in those codecs...so the argument could be made for O(1).
+		in those codecs...so the argument could be made for O(1) - constant time.
 */
 function isPalindromePermutationSet (input) {
 	//if input is null, undefined, or empty string

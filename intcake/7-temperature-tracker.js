@@ -22,6 +22,13 @@
 */
 
 
+/*
+	Time complexity of getting the min max mean and mode are O(1) since they are pre-computed
+
+	Space complexity is O(1) since the only data structure we need is an array of ints from 0-110
+	which is a constant scale.
+*/
+
 function TempTracker () {
 	this.max = null;
 	this.min = null;

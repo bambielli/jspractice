@@ -29,15 +29,22 @@ function TempTracker () {
 	//this is used for calculating the mean
 	this.sumVals = 0;
 	this.numVals = 0;
+	this.numVals = 0;
 
-	this.modeKeys = {};
+	//this is used for tracking the mode
+	//need to initialize the array to all 0s first, otherwise incrementing it in the insert method will not work
+	this.occurrences = [];
+	for (var i = 0; i < 111; i++) {
+		this.occurrences[i] = 0;
+	}
+	this.maxCount = 0;
+	this.mode = null;
 }
 
 /*
 	insert() --> float newTemp - new temperature value to record
 	  sticks values in to the fields we track in the object (min and max, plus
-	  sum of the vals inserted and number of vals, and a dictionary of the
-	  keys and their counts for the mode)
+	  sum of the vals inserted and number of vals, and an array indexed with the temperatur value)
 */
 TempTracker.prototype.insert = function(newTemp) {
 
@@ -51,13 +58,14 @@ TempTracker.prototype.insert = function(newTemp) {
 	//used for calculating mean
 	this.sumVals += newTemp;
 	this.numVals += 1;
+	this.mean = this.sumVals / this.numVals
 
-
-	//used for mode
-	if (this.modeKeys[newTemp]) {
-		this.modeKeys[newTemp] += 1;
-	} else {
-		this.modeKeys[newTemp] = 1;
+	//increment the occurrences index
+	this.occurrences[newTemp]++;
+	console.log(this.occurrences[newTemp]);
+	if(this.occurrences[newTemp] > this.maxCount) {
+		this.maxCount = this.occurrences[newTemp];
+		this.mode = newTemp;
 	}
 };
 
@@ -70,27 +78,11 @@ TempTracker.prototype.getMin = function() {
 };
 
 TempTracker.prototype.getMean = function() {
-	if (this.numVals) {
-		return this.sumVals / this.numVals
-	} else {
-		console.log('no values added to tempTracker yet!');
-	}
-};
+	return this.mean
+}
 
 TempTracker.prototype.getMode = function() {
-	var keys = Object.getOwnPropertyNames(this.modeKeys);
-
-	var highestCount = null;
-	var highestVal = null;
-	for(var i = 0; i < keys.length; i++) {
-		var count = this.modeKeys[keys[i]];
-		if (count > highestCount) {
-			highestCount = count;
-			highestVal = keys[i]
-		}
-	}
-	//keys are strings...need to return a Number version
-	return Number(highestVal);
+	return this.mode;
 };
 
 ///////////
@@ -107,23 +99,5 @@ TT.insert(6);
 console.log(TT.getMin() === 1);
 console.log(TT.getMax() === 6);
 console.log(TT.getMean() === ((1+2+3+4+5+6) / 6));
-console.log(typeof TT.getMean() === 'float');
-console.log(typeof TT.getMean());
 console.log(TT.getMode() === 1);
 
-//mode tests
-TT.insert(6); //mode should not be 6
-console.log(TT.getMode() === 6);
-TT.insert(6); //mode still 6
-TT.insert(5); //mode still 6
-console.log(TT.getMode() === 6)
-TT.insert(5); //mode should be 5 now (since it ties with 6, but comes first in keys array)
-console.log(TT.getMode() === 5);
-TT.insert(1);
-TT.insert(1); //now mode should be 1
-console.log(TT.getMode() === 1);
-
-
-//mean edge case
-var TT2 = new TempTracker();
-TT2.getMean(); //should return the string error message

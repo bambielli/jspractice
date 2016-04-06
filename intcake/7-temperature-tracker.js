@@ -93,9 +93,9 @@ TempTracker.prototype.getMode = function() {
 	return Number(highestVal);
 };
 
-////////////
-// Tester //
-////////////
+///////////
+// Tests //
+///////////
 
 var TT = new TempTracker();
 TT.insert(1);
@@ -107,4 +107,23 @@ TT.insert(6);
 console.log(TT.getMin() === 1);
 console.log(TT.getMax() === 6);
 console.log(TT.getMean() === ((1+2+3+4+5+6) / 6));
+console.log(typeof TT.getMean() === 'float');
+console.log(typeof TT.getMean());
 console.log(TT.getMode() === 1);
+
+//mode tests
+TT.insert(6); //mode should not be 6
+console.log(TT.getMode() === 6);
+TT.insert(6); //mode still 6
+TT.insert(5); //mode still 6
+console.log(TT.getMode() === 6)
+TT.insert(5); //mode should be 5 now (since it ties with 6, but comes first in keys array)
+console.log(TT.getMode() === 5);
+TT.insert(1);
+TT.insert(1); //now mode should be 1
+console.log(TT.getMode() === 1);
+
+
+//mean edge case
+var TT2 = new TempTracker();
+TT2.getMean(); //should return the string error message

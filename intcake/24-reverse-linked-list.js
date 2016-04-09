@@ -16,6 +16,9 @@ head.next.next.next = new LinkedListNode(4);
 
 console.log(head);
 
+/*
+	Reverse happens in place in O(n) time, and O(1) space
+*/
 function linkedListReverse(headOfList) {
     var current  = headOfList;
     var previous = null;

@@ -8,6 +8,14 @@
 	we add this as the maxStack field to the MaxStack class.
 	This field is pushed to if the value being added to the stack is greater than or equal to
 	the value being added to the top of the stack.
+
+	A lazy implementation could just be to walk the stack every time we want to find the max,
+	and return what we find. This is O(n) from a time complexity standpoint, but it is more
+	space efficient than our chosen implementation with dual stacks.
+
+	I guess when implementing a problem like this, we should first ask what the constraints are
+	and design appropriately.
+
 */
 
 function Stack() {
@@ -38,12 +46,11 @@ Stack.prototype.peek = function() {
 
 function MaxStack() {
 	this.stack = new Stack();
-	this.maxStack = [];
+	this.maxStack = new Stack();
 }
 
 MaxStack.prototype.getMax = function () {
-	if (!this.maxStack.length) return null;
-	return this.maxStack[this.maxStack.length - 1]
+	return this.maxStack.peek();
 }
 
 MaxStack.prototype.push = function(val) {

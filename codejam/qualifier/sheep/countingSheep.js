@@ -37,7 +37,6 @@ reader.onload = function(e) {
 	for (var i = 0; i < result.length; i++) {
 		countSheep(i+1, Number(result[i]));
 	}
-
 }
 
 reader.readAsText(new File('A-large.txt'));

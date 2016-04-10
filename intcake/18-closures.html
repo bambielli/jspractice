@@ -1,0 +1,41 @@
+<!--
+	Something is wrong with the following code...what is it?
+
+	A. Every time you click a button, you will get undefined. A reference to btnNum is passed
+	to each onClick callback. At the end of the loop, btnNum will be 3, and there is no third
+	index in the list of prizes.
+
+
+	<script type="text/javascript">
+	    var prizes = ['A Unicorn!', 'A Hug!', 'Fresh Laundry!'];
+	    for (var btnNum = 0; btnNum < prizes.length; btnNum++) {
+	        // for each of our buttons, when the user clicks it...
+	        document.getElementById('btn-' + btnNum).onclick = function() {
+	            // tell her what she's won!
+	            alert(prizes[btnNum]); //btnNum is always 3
+	        };
+	    }
+	</script>
+	If you assigned btnNum to 0 at the end of the script, all 3 would read "A Unicorn!".
+
+	The expected behavior is that each time you click a button you see a different prize.
+	A way to fix this could be to make a CLOSURE around the callback, via an IIFE, and pass
+	the current btnNum to that closure. See below.
+ -->
+
+<button id="btn-0">Button 1!</button>
+<button id="btn-1">Button 2!</button>
+<button id="btn-2">Button 3!</button>
+
+<script type="text/javascript">
+    var prizes = ['A Unicorn!', 'A Hug!', 'Fresh Laundry!'];
+    for (var btnNum = 0; btnNum < prizes.length; btnNum++) {
+        // for each of our buttons, when the user clicks it...
+        document.getElementById('btn-' + btnNum).onclick = function(btnNum) {
+        	return function() {
+            // tell her what she's won!
+            alert(prizes[btnNum]);
+        	};
+        }(btnNum);
+    }
+</script>

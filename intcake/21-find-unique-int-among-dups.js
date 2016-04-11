@@ -42,6 +42,10 @@ and some deliveries get cancelled before takeoff.
 	This accomplishes the task with O(1) space complexity, which is great.
 */
 
+/*
+	Returns the unique number in an array, if there is one.
+	Returns 0 otherwise.
+*/
 function uniqueNum (arr) {
 	var unique = 0;
 	for (var i = 0; i < arr.length; i++) {
@@ -52,4 +56,7 @@ function uniqueNum (arr) {
 
 var arr = [1, 2, 2, 3, 3, 4, 5, 1, 4, 6, 7, 7, 6]
 
+console.log(uniqueNum(arr));
+
+var arr = [1,1]
 console.log(uniqueNum(arr));

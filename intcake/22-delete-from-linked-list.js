@@ -37,6 +37,11 @@ Nevermind it doesn't work, because we can't change an object reference that is p
 to a function to a different object (null is an object). The original reference will persist. We can
 still MUTATE that reference, but we can't change it to a completely different object.
 
+Another side effect, as described in the problem solution, is that if there are references to the node we "deleted"
+elsewhere in our code, and we are expecting it to have a certain value, the value will now be changed.
+Also, if we had references to node "c", since it is now dangling we will never be able to reach it agian.
+
+
 */
 
 function Node (val) {

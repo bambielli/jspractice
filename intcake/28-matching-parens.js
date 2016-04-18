@@ -33,6 +33,11 @@ function matchingParenthesis(inputString, openParenPosition) {
     throw new Error('No closing parenthesis :(');
 }
 
+///////////
+// Tests //
+///////////
+
+
 var inputString = "(hello my name is bob)";
 console.log(matchingParenthesis(inputString, 0));
 inputString = "(((()((()(()(()(())))))())()))"

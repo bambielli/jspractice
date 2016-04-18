@@ -1,151 +1,110 @@
 /*
-	Constructor for node object
-	  value: the value of the node
-	  next: pointer to the next node in the list. if not provided, is set to null.
+	This is an alternate linkedList implementation that what is found
+	in linkedListWrapper.js.
 
-	NOTE: I don't want to re-define the node class inside of each linked list instance,
-	      since that would be a waste of memory! Declaring as a global seems to be the
-	      best course of action for my set up here. If I could add it as a private member
-	      of the linkedList.prototype that would be the dream...
+	linkedListWrappper also implemented a wrapper class for a LinkedList that contained
+	the "head" node pointer, and also the size of the list. This is not really necessary, though,
+	and was just a conveninent container to store the linkedList methods (via the LinkedList.prototype)
+
+	In this implementation I will just build linkedLists with a Node class, and no wrapper.
+
+	I will implement:
+	addNodeHead --> adds a node to the Head of the list (new head) (O(1) time and space)
+	addNodeTail --> adds a node to the Tail of the list (O(n) time and O(1) space)
+	reverseList --> Reverses the LinkedList
+	removeNodePointer --> removes a node from the list with just a pointer to the node to be deleted
+	removeValueFromList --> removes all nodes with a specific value from the list, with a pointer to the head as input
+	containsCycle --> determins if the list has a cycle (O(n) time and O(1) space)
+	containsCycleExpensive --> determines if the list has a cycle in O(n) time and O(n) space
+
 */
-function node(value, next) {
-	this.value = value;
-	this.next = next || null;
-};
 
-/*
-	Constructor for linkedList object
-	  front: keeps track of the node at the front of the list. Defaults to null.
-	  size: keeps track of how many items are in the list.
-*/
-function linkedList() {
-	this.front = null;
-	this.size = 0;
-};
+function Node(val) {
+	this.value = val;
+	this.next = null;
+}
 
-///////////////////////
-// Prototype Methods //
-///////////////////////
+function addNodeHead(oldHeadNode, val) {
+	var newHeadNode = new Node(val);
+	newHeadNode.next = oldHeadNode;
+	return newHeadNode;
+}
 
-// NOTE: Add common linkedList methods to the linkedList.prototype, to ensure they are not
-//       re-defined with each construction of a new linkedList object (saves memory)
-
-/*
-	linkedList.addFront(val) --> adds a new node with value val to the front of the linked list
-
-	This happens in O(1) time, since we always know where the front
-	of the list is via the linkedList.front field
-*/
-linkedList.prototype.addFront = function(val) {
-	this.front = new node(val, this.front);
-	this.size += 1;
-};
-
-/*
-	linkedList.addEnd(val) --> adds a new node with value val to the end of the linked list
-
-	This happens in O(n) time, where n is the size of the linked list,
-	because we need to traverse the entire list from front to end to find the end node.
-*/
-linkedList.prototype.addEnd = function(val) {
-	var current = this.front;
-	while (current.next !== null) {
-		current = current.next;
+function addNodeTail(headNode, val) {
+	if(!headNode || typeof headNode !== 'object' || !headNode.hasOwnProperty('next')) {
+		throw new Error('please include a valid headNode for the list to which you want to add a node');
 	}
-	// at this point we have found the last item in the list.
-	current.next = new node(val);
-	this.size += 1;
-};
+	var previousNode = headNode
+	while(previousNode.next) {
+		previousNode = previousNode.next;
+	}
+	//at this point, previousNode is the last node in the list;
+	previousNode.next = new Node(val);
+}
 
 /*
-	linkedList.remove --> removes the first instance found of val from the linkedList.
-	                      if no value matching val is found in the list, the list is unaltered.
-
-	This happens in O(n) time, where n is the size of the list, since worst case we need
-	to traverse the entire list from front to end to find the val to remove, or to determine
-	that there is no value matching val to remove.
+	Note, this will not work if hte nodeToRemove is the last item in a linkedList
+	This will also mutate any other references to nodeToRemove in the program.
+	Any references to nodeToRemove.next will be pointing to a dangling node, which is bad as well.
 */
-linkedList.prototype.remove = function(val){
-	var current = this.front;
-	var prev;
-	while (current !== null) {
-		if (current.value === val) {
-			//since prev is initially undefined, if the item is the first in the list
-			//we should just change the pointer to front to be current.next
-			if (prev) {
-				prev.next = current.next;
-			} else {
-				this.front = current.next;
-			}
-			this.size -= 1;
+function removeNodePointer(nodeToRemove) {
+	if(!nodeToRemove || typeof nodeToRemove !== 'object' || !nodeToRemove.hasOwnProperty('next')) {
+		throw new Error ('please include a valid node that you would like to remove from the list')
+	} else if (!nodeToRemove.next) {
+		throw new Error ('sorry, cant remove node from the end of the list without pointer to headNode!');
+	}
+
+	//make the value of the nodeToRemove the value of its next node
+	//make the next pointer of the nodeToRemove the next pointer of its next node.
+	nodeToRemove.value = nodeToRemove.next.value;
+	nodeToRemove.next = nodeToRemove.next.next;
+}
+
+//this doesn't work if the reference to the head node changes (because it was removed)
+//need to have some sort of wrapper that keeps track of the head, and can update the head
+//can't update the head here to something new, because the reference will be reset at the end
+//of the procedure.
+function removeValueFromList(headNode, value) {
+	if(!headNode || typeof headNode !== 'object' || !headNode.hasOwnProperty('next')) {
+		throw new Error('please include a valid headNode for the list to which you want to add a node');
+	}
+
+	var currentNode = headNode;
+	var previousNode = headNode;
+	while(currentNode) {
+		var nextNode = currentNode.next;
+		if (currentNode.value === value) {
+			//remove the node from the list
+			previousNode.next = currentNode.next
+			currentNode.next = null;
+			currentNode = nextNode;
 			break;
+		} else {
+			previousNode = currentNode;
+			currentNode = nextNode;
 		}
-		prev = current;
-		current = current.next;
 	}
-};
+}
 
 /*
-	linkedList.printList() --> Prints the values of the nodes currently in the list,
-	          			       along with the size
+	Used by test methods to generate lists of size "size" with nodes of random integer values
 */
-linkedList.prototype.printList = function() {
-	var current = this.front;
-	var list = []; //use this to track the values in the linked list
-	while (current !== null) {
-		list.push(current.value)
-		current = current.next;
+function generateList(size) {
+	//if size is 0, just return null;
+	if(!size) {
+		return null;
 	}
-	console.log(list, "size: " + this.size);
-};
-
-//reverses the linked list in place. destroys the original list.
-linkedList.prototype.linkedListReverse = function (headOfList) {
-    var current  = headOfList;
-    var previous = null;
-    var nextNode = null;
-
-    // until we have 'fallen off' the end of the list
-    while (current) {
-
-        // copy a pointer to the next element
-        // before we overwrite current.next
-        nextNode = current.next;
-
-        // reverse the 'next' pointer
-        current.next = previous;
-
-        // step forward in the list
-        previous = current;
-        current = nextNode;
-    }
-
-    return previous;
-
-};
+	var currentHeadNode = new Node(0);
+	for (var i = 1; i < size; i++) {
+		addNodeTail(currentHeadNode, i);
+	}
+	return currentHeadNode;
+}
 
 
-/////////////////////////
-// Testing the methods //
-/////////////////////////
+var headNode1 = generateList(3);
+console.log(headNode1);
 
-// Construct a list
-var ll = new linkedList();
-
-// Add some items
-ll.addFront(1);
-ll.addFront(2);
-ll.addEnd(3);
-ll.printList();//should result in [2, 1, 3]
-
-// Remove the middle item
-ll.remove(1);
-ll.printList(); //should result in [2, 3]
-
-// Remove the end item
-ll.remove(3);
-ll.printList(); //should result in [2]
-
-// Remove the first item (only item)
-ll.remove(2);
-ll.printList(); //should result in '[]'
+removeValueFromList(headNode1, 1);
+console.log(headNode1);
+console.log(removeValueFromList(headNode1, 0));

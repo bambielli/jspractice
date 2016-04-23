@@ -203,7 +203,7 @@ binarySearchTree.prototype.preOrder = function(node, collection) {
 */
 binarySearchTree.prototype.inOrder = function(node, collection) {
 	if (node) {
-		this.inOrder(node.left, collection);
+		this.inOrder(node.left, collection)
 		collection.push(node.value);
 		this.inOrder(node.right, collection);
 	}

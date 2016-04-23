@@ -71,7 +71,7 @@ LinkedList.prototype.remove = function(val){
 	while (current !== null) {
 		if (current.value === val) {
 			//since prev is initially undefined, if the item is the first in the list
-			//we should just change the pointer to front to be current.next
+			//we should just ]change the pointer to front to be current.next
 			if (prev) {
 				prev.next = current.next;
 			} else {

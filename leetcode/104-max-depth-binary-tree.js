@@ -1,4 +1,8 @@
 /**
+ * Max depth of a binary tree
+ */
+
+/**
  * Definition for a binary tree node.
  * function TreeNode(val) {
  *     this.val = val;

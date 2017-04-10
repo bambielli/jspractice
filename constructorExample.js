@@ -3,13 +3,13 @@
   It is referenced by my blog:
 */
 
-// Parent class
+// Superclass
 function Pie (size, toppings) {
   this.size = size
   this.toppings = toppings
 }
 
-// add method to the prototype so it is not re-defined by each object instance,
+// add method to the prototype so it is not re-defined in each object instance,
 // and is available to sub-classes on the Pie prototype chain.
 Pie.prototype.getDescription = function () {
   console.log(`Pie is ${this.size} inches large and has the following toppings: ${this.toppings.join(', ')}`)
@@ -22,7 +22,7 @@ const pie = new Pie(11, ['cheese'])
 // delegate the lookup of the method to the prototype chain.
 pie.getDescription()
 
-// sub-class of Pie
+// Subclass
 function Pizza (size, toppings, deepDish) {
   Pie.call(this, size, toppings) // calls the Pie constructor with the new Pizza `this`
   this.deepDish = deepDish
@@ -36,10 +36,10 @@ function Pizza (size, toppings, deepDish) {
 // }
 //
 
-// this line sets the prototype of Pizza to the prototype of Pie,
+// the following line sets the prototype of Pizza to the prototype of Pie,
 // but overwrites the constructor of Pizza in the process...
 // we use Object.create to get a deep copy of the Pie.prototype object,
-// so any methods we add to Pizza.prototype won't affect Pie.prototype.
+// so any new methods we add to Pizza.prototype won't affect Pie.prototype
 Pizza.prototype = Object.create(Pie.prototype)
 
 // this updates the constructor of Pizza from Pie back to Pizza
@@ -48,6 +48,15 @@ Pizza.prototype.constructor = Pizza
 // we can define new Pizza prototype methods now, if we want.
 Pizza.prototype.isDeepDish = function () {
   console.log(this.deepDish)
+}
+
+// partial-override of a method that is defined in the prototype.
+// calling the Pie.prototype method here acts as a `super` call would in Java.
+// the `call` is necessary so the method has the correct execution context (the Pizza object).
+// A full override of the method is possible by removing the call to Pie.prototype.getDescription
+Pizza.prototype.getDescription = function () {
+  Pie.prototype.getDescription.call(this)
+  console.log(`This pizza is a deepdish ${this.deepDish}`)
 }
 
 const pizza = new Pizza(12, ['pepperoni', 'cheese'], true)

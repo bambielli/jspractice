@@ -1,6 +1,6 @@
 /*
   This file demonstrates how prototypal inheritance works.
-  It is referenced by my blog:
+  It is referenced by my blog: http://www.bambielli.com/til/2017-04-09-javascript-inheritance/
 */
 
 // Superclass

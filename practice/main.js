@@ -50,7 +50,6 @@ function generateRow (numCols, rowNum) {
 
 window.nextGeneration = function() {
     const diff = generation.next();
-    console.log('diff is', diff);
     if (diff.length === 0) {
         document.getElementById('stable').classList.remove('hidden');
     }

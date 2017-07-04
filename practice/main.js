@@ -10,6 +10,8 @@ function resetView() {
     }
     document.getElementById('stable').classList.add('hidden');
     document.getElementById('nextbtn').classList.remove('hidden');
+    document.getElementById('go').classList.remove('hidden')
+
 }
 
 window.generateGrid = function() {
@@ -53,6 +55,9 @@ window.nextGeneration = function() {
     const diff = generation.next();
     if (diff.length === 0) {
         document.getElementById('stable').classList.remove('hidden');
+        if (intervalId) {
+            window.stop();
+        }
     } else {
         document.getElementById('stable').classList.add('hidden');
         updateGrid(diff);
@@ -70,3 +75,21 @@ function updateGrid(diff) {
     })
 }
 
+let intervalId;
+
+window.autoRun = function () {
+    intervalId = setInterval(function() {
+       window.nextGeneration();
+    }, 500)
+    document.getElementById('stop').classList.remove('hidden')
+    document.getElementById('nextbtn').classList.add('hidden');
+    document.getElementById('go').classList.add('hidden')
+}
+
+window.stop = function () {
+    clearInterval(intervalId);
+    intervalId = undefined;
+    document.getElementById('stop').classList.add('hidden')
+    document.getElementById('go').classList.remove('hidden')
+    document.getElementById('nextbtn').classList.remove('hidden');
+}

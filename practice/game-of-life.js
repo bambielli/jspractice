@@ -15,3 +15,9 @@
 
     Need some method for returning the list of valid neighbors for a coordinate. My coordinate package does this already!
  */
+
+import Coordinate from 'surrounding-coordinates';
+
+console.log('loaded');
+console.log(Coordinate);
+

@@ -9,13 +9,14 @@ function resetView() {
         table.removeChild(table.firstChild);
     }
     document.getElementById('stable').classList.add('hidden');
+    document.getElementById('nextbtn').classList.remove('hidden');
 }
 
 window.generateGrid = function() {
-    resetView();
     const table = document.getElementById('grid');
     const n = document.getElementById('grid-size').value;
     if (n && !isNaN(parseInt(n))) {
+        resetView();
         generation = new Generation(n);
         const tbody = document.createElement('tbody');
         for (let rowNum = 0; rowNum < n; rowNum++) {
@@ -52,8 +53,10 @@ window.nextGeneration = function() {
     const diff = generation.next();
     if (diff.length === 0) {
         document.getElementById('stable').classList.remove('hidden');
+    } else {
+        document.getElementById('stable').classList.add('hidden');
+        updateGrid(diff);
     }
-    updateGrid(diff);
 }
 
 // called after nextGeneration is generated, to update the dom to match new state of the world.

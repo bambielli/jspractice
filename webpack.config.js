@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 
 module.exports = {
-  entry: ["./practice/game-of-life.js"],
+  entry: ["./practice/main.js"],
   output: {
     filename: "./practice/bundle.js",
   },

@@ -2,8 +2,16 @@
 <html>
     <head>
         <title>Game of Life Simulation</title>
+        <link rel="stylesheet" href="./life.css"></link>
     </head>
     <body>
+        <h2>That's life bro!</h2>
+        <input id="grid-size" type="text" placeholder="Enter the size of your grid"></input>
+        <button onClick="generateGrid()">click to create grid</button>
+        <table id="grid" class="centered">
+        </table>
+        <button onClick="nextGeneration()">NextGeneration</button>
+        <h2 id="stable" class="hidden">STABILIZED!</h2>
         <script src="./bundle.js"></script>
     </body>
 </html>

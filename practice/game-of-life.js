@@ -14,10 +14,33 @@
     Class Coordinate(x, y, isAlive) <-- I think livingNeighbors will be calculated on demand.
 
     Need some method for returning the list of valid neighbors for a coordinate. My coordinate package does this already!
+
+    Shouldn't pre-compute all possible generations... we should use some sort of generator-like functionality
+    that we can request the .next() generation from. Generator can store the current generation, produce the next one,
+    and overwrite the previous one.
  */
 
 import Coordinate from 'surrounding-coordinates';
 
-console.log('loaded');
-console.log(Coordinate);
+function* nextCoordinate() {
+    let x = 0;
+    let y = 0;
+    while (x < 2 || y < 2) {
+        yield new Coordinate(x, y)
+        yield new Coordinate(x, y+1)
+        yield new Coordinate(x+1, y)
+        x++
+        y++
+    }
+    yield new Coordinate(x, y);
+}
 
+let gen = nextCoordinate();
+let currentCoord = gen.next().value;
+let coordinateArray = [];
+while (currentCoord) {
+    coordinateArray.push(currentCoord);
+    currentCoord = gen.next().value;
+}
+
+console.log(coordinateArray);

@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 
 module.exports = {
-  entry: ["babel-polyfill", "./practice/game-of-life.js"],
+  entry: ["./practice/game-of-life.js"],
   output: {
     filename: "./practice/bundle.js",
   },

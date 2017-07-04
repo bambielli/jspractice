@@ -122,5 +122,5 @@ const isRightParen = (value) => {
 // console.log('TEST 1 -', 'EXPECT: 10 4 3 + 2 * -', 'GOT:', infixToPostfix('10 - ( 4 + 3 ) * 2'));
 // console.log('TEST 2 -', 'EXPECT: 5 3 + 12 * 3 /', 'GOT:', infixToPostfix('( 5 + 3 ) * 12 / 3 '));
 // console.log('TEST 2 -', 'EXPECT: 3 4 2 * 1 5 - 2 ^ 3 ^ / +', 'GOT:', infixToPostfix('3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3'));
-
+console.log(infixToPostfix('3 + 4 ( 3 + 4 )'))
 module.exports = {infixToPostfix}

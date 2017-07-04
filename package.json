@@ -1,0 +1,25 @@
+{
+  "name": "jspractice",
+  "version": "1.0.0",
+  "description": "practice problems",
+  "main": "none",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bambielli/jspractice.git"
+  },
+  "keywords": [
+    "test"
+  ],
+  "author": "brian ambielli",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bambielli/jspractice/issues"
+  },
+  "homepage": "https://github.com/bambielli/jspractice#readme",
+  "dependencies": {
+    "surrounding-coordinates": "^1.0.0"
+  }
+}

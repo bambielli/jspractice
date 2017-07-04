@@ -2,16 +2,17 @@ import { Generation, LifeCoordinate } from './game-of-life';
 
 let generation;
 
-function removeOldTable() {
+function resetView() {
     const table = document.getElementById('grid');
     // remove old grid, if it exists
     while(table.firstChild) {
         table.removeChild(table.firstChild);
     }
+    document.getElementById('stable').classList.add('hidden');
 }
 
 window.generateGrid = function() {
-    removeOldTable();
+    resetView();
     const table = document.getElementById('grid');
     const n = document.getElementById('grid-size').value;
     if (n && !isNaN(parseInt(n))) {
@@ -49,6 +50,10 @@ function generateRow (numCols, rowNum) {
 
 window.nextGeneration = function() {
     const diff = generation.next();
+    console.log('diff is', diff);
+    if (diff.length === 0) {
+        document.getElementById('stable').classList.remove('hidden');
+    }
     updateGrid(diff);
 }
 

@@ -90,18 +90,15 @@ Generation.prototype.next = function () {
     this.state.forEach((row) => {
         row.forEach((coord) => {
             const livingCoords = this.findSurroundingLivingCoordinates(coord);
-            if (livingCoords.length < 2 || livingCoords.length > 3) { // underpopulation / overpopulation
-                const oldValue = this.state[coord.y][coord.x].isAlive
-                if (oldValue !== false) {
-                    nextGen[coord.y][coord.x].isAlive = false;
-                    diff.push(nextGen[coord.y][coord.x]);
-                }
+            if (livingCoords.length < 2) { // underpopulation
+                nextGen[coord.y][coord.x].isAlive = false;
+                diff.push(nextGen[coord.y][coord.x]);
             } else if (livingCoords.length === 3) { // reproduction
-                const oldValue = this.state[coord.y][coord.x].isAlive
-                if (oldValue !== true) {
-                    nextGen[coord.y][coord.x].isAlive = true;
-                    diff.push(nextGen[coord.y][coord.x]);
-                }
+                nextGen[coord.y][coord.x].isAlive = true;
+                diff.push(nextGen[coord.y][coord.x]);
+            } else if (livingCoords.length > 3) { // overpopulation
+                nextGen[coord.y][coord.x].isAlive = false;
+                diff.push(nextGen[coord.y][coord.x]);
             } else { // stability
                 nextGen[coord.y][coord.x].isAlive = coord.isAlive;
             }

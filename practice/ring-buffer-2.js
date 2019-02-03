@@ -50,6 +50,21 @@ class RingBuffer {
   get size() {
     return this.buffer.length;
   }
+
+  head() {
+    if (this.isEmpty()) {
+      return -1;
+    }
+    return this.buffer[this.readNext];
+  }
+
+  tail() {
+    if (this.isEmpty()) {
+      return -1
+    }
+    const rearIdx = (this.readNext + this.itemsInBuffer - 1) % this.size;
+    return this.buffer[rearIdx];
+  }
 }
 
 const rb = new RingBuffer(3);
@@ -64,6 +79,8 @@ console.log(rb.read());
 console.log(rb);
 rb.write(4); //should succeed now
 console.log(rb);
+console.log('should be 1:', rb.head()) // should be 1
+console.log('should be 4:', rb.tail()) // should be 4
 
 while(!rb.isEmpty()) {
   console.log(rb.read())
